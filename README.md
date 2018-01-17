@@ -2,7 +2,7 @@
 
 ## 环境依赖
 
-- Linux/Mac 系统
+- Linux/Mac/Windows7或以上
 
 - Python3.5 或以上
 
@@ -22,7 +22,9 @@
 
 - 3. 进入虚拟环境并安装依赖
 
-`source myvenv/bin/activate`
+`source my_venv/bin/activate`
+
+Windows下需要进入`my_venv/Scripts`目录,执行`activate.bat`或`Activate.ps1`
 
 `cd /path/to/scrapy_demo`
 
