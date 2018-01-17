@@ -24,7 +24,7 @@ class MusicSpider(CrawlSpider):
     )
     custom_settings = {
         'ITEM_PIPELINES': {
-            'myspider.pipeline.json_pipeline.DemoPipeline': 1,
+            'myspider.pipeline.json_pipeline.DefaultPipeline': 1,
         }
     }
 
