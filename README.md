@@ -47,7 +47,7 @@ Windows下需要进入`my_venv/Scripts`目录,执行`activate.bat`或`Activate.p
 
 `pip install spiderkeeper` #安装spiderkeeper
 
-配置supervisor
+**配置supervisor**
 
 ```
 [program:spiderkeeper]
