@@ -39,3 +39,79 @@ Windows下需要进入`my_venv/Scripts`目录,执行`activate.bat`或`Activate.p
 - 5. 其他爬虫
 
 在spiders目录下可以查看到已有的爬虫案例
+
+
+## 利用spiderkeeper管理爬虫
+
+`pip install git+https://github.com/scrapy/scrapyd-client.git@python3-wip` #先安装scrapyd-client
+
+`pip install spiderkeeper` #安装spiderkeeper
+
+配置supervisor
+
+```
+[program:spiderkeeper]
+command=spiderkeeper --server=http://localhost:6800 --username=user --password=pass
+directory=/home
+autostart=true
+autorestart=true
+startretries=3
+
+[program:scrapyd]
+command=source /home/my_venv/bin/activate
+directory=/home/tony/
+command=/home/my_venv/bin/scrapyd
+autostart=true
+autorestart=true
+redirect_stderr=true
+```
+
+**部署与维护**
+
+`curl http://localhost:6800/listversions.json?project=myspider`
+
+> {"node_name": "localhost.localdomain", "status": "ok", "versions": ["1508438806"]}
+
+`curl http://localhost:6800/delversion.json -d project=myspider -d version=xxx`
+
+`source /home/my_venv/bin/activate`
+
+`cd /home/tony/myspider`
+
+`scrapyd-deploy myspider -p myspider`
+
+`deactivate`
+
+`supervisorctl restart spiderkeeper`
+
+**调度一个爬虫**
+
+`curl http://localhost:6800/schedule.json -d project=[myspider] -d spider=[spider_name]`
+
+**取消一个任务**
+
+`curl http://localhost:6800/cancel.json -d project=[myspider] -d job=[job_id]`
+
+**爬虫列表**
+
+`curl http://localhost:6800/listspiders.json?project=myspider`
+
+**任务列表**
+
+`curl http://localhost:6800/listjobs.json?project=myspider`
+
+**项目列表**
+
+`curl http://localhost:6800/listprojects.json`
+
+**版本列表**
+
+`curl http://localhost:6800/listversions.json?project=myspider`
+
+**删除版本**
+
+`curl http://localhost:6800/delversion.json -d project=myspider -d version=r99`
+
+**删除项目**
+
+`curl http://localhost:6800/delproject.json -d project=myspider`
