@@ -79,3 +79,24 @@ def extractPic(n, x):
         h[o] = tmp
         l += chr(ord(chr(m[i])) ^ (h[(h[v] + h[o]) % 256]))
     return l[26:]
+
+
+class TransCookie(object):
+    '''cookie字符串转为字典'''
+    def __init__(self, cookie)
+        self.cookie = cookie
+
+    def String2Dict(self):
+        itemDict = {}
+        items = self.cookie.split(';')
+        for item in items:
+            key = item.split('=')[0].strip()
+            value = item.split('=')[1]
+            itemDict[key] = value
+        return itemDict
+
+if __name__ == '__main__'
+    cookie = input('输入字符串格式的cookie')
+    tc = TransCookie(cookie)
+    print(tc)
+    print(tc.String2Dict())
