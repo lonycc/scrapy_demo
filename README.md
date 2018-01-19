@@ -66,6 +66,23 @@ autorestart=true
 redirect_stderr=true
 ```
 
+**nginx配置**
+```
+    server {
+        listen 80;
+        server_name spider.domain.com;
+        location / {
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Scheme $scheme;
+            proxy_redirect off;
+            proxy_pass http://127.0.0.1:5000;
+        }
+    }
+```
+
+
 **部署与维护**
 
 `curl http://localhost:6800/listversions.json?project=myspider`
@@ -86,7 +103,7 @@ redirect_stderr=true
 
 
 
-## scrapyd-deploy提供的接口
+## scrapyd提供的接口
 
 **调度一个爬虫**
 
@@ -119,7 +136,6 @@ redirect_stderr=true
 **删除项目**
 
 `curl http://localhost:6800/delproject.json -d project=myspider`
-
 
 
 ## scrapy 命令行
