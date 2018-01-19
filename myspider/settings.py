@@ -83,3 +83,29 @@ USER_AGENTS = [
     'Mozilla/5.0 (Linux; Android 5.1.1; OPPO A53 Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043220 Safari/537.36 MicroMessenger/6.5.8.1060 NetType/4G Language/zh_CN',
     'Mozilla/5.0 (Linux; U; Android 6.0.1; zh-cn; MI MAX Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.146 Mobile Safari/537.36 XiaoMi/MiuiBrowser/8.7.8'
 ]
+
+# 以下配置和scrapy-redis相关
+#SCHEDULER = "scrapy_redis.scheduler.Scheduler" #使用scrapy_redis重新实现的调度器
+#DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter" #使用scrapy_redis重新实现的request去重策略
+#SCHEDULER_SERIALIZER = "scrapy_redis.picklecompat"  #python3 里面不支持json/msgpack
+
+#SCHEDULER_PERSIST = False  #默认为False, 表示爬虫关闭时调度器会清空redis中去重队列和调度池
+#SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue' #优先级队列
+#SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.FifoQueue' #队列
+#SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.LifoQueue' #堆栈
+#SCHEDULER_IDLE_BEFORE_CLOSE = 10 #空闲等待时间, 仅当scheduler_queue_class为spiderQueue或spiderStack时生效
+
+#REDIS_ITEMS_KEY = '%(spider)s:items' #item pipeline 序列化并存储在redis中的key
+#REDIS_ITEMS_SERIALIZER = 'json.dumps'
+#REDIS_HOST = 'localhost'
+#REDIS_PORT = 6379
+#REDIS_URL = 'redis://user:pass@hostname:6379' #该项设置优先于redis_host和redis_port
+#REDIS_URL = 'redis://localhost:6379'
+#REDIS_PARAMS  = {}  #redis额外参数, 如timeout/socket
+
+#REDIS_START_URLS_AS_SET = False #若为true, 则使用sadd/spop操作, 可对start urls去重
+#REDIS_START_URLS_KEY = '%(name)s:start_urls'
+#REDIS_ENCODING = 'utf-8'
+
+#DEFAULT_REQUEST_HEADERS = {} #覆盖默认请求头
+#USER_AGENT = 'scrapy-redis (+https://github.com/rolando/scrapy-redis)' #默认ua
