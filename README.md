@@ -84,6 +84,10 @@ redirect_stderr=true
 
 `supervisorctl restart spiderkeeper`
 
+
+
+## scrapyd-deploy提供的接口
+
 **调度一个爬虫**
 
 `curl http://localhost:6800/schedule.json -d project=[myspider] -d spider=[spider_name]`
@@ -115,3 +119,23 @@ redirect_stderr=true
 **删除项目**
 
 `curl http://localhost:6800/delproject.json -d project=myspider`
+
+
+
+## scrapy 命令行
+
+`scrapy startproject [project_name]` #创建一个项目
+
+`scrapy crawl [spider_name]`  #启动一个爬虫
+
+`scrapy view [url]`  #查看一个链接
+
+`scrapy version -v`  #版本信息
+
+`scrapy check`  #当前项目检查
+
+`scrapy shell` #进入交互环境
+
+`scrapy list`  #当前项目爬虫列表
+
+`scrapy genspider [spider_name] [domain]`  #生成一个爬虫
