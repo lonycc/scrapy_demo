@@ -1,11 +1,13 @@
 # coding=utf-8
 
 from myspider.items import JandanDuanItem
+from myspider.lib.send_mail import mailSender
 from scrapy.http import Request
-import scrapy
+from scrapy.spiders import CrawlerSpider
+from scrapy import signals
 from json import loads
 
-class jandan_duan(scrapy.Spider):
+class jandan_duan(CrawlSpider):
     name = 'jandan_duan'
     allowed_domains = ['i.jandan.net']
     headers = {
@@ -65,3 +67,21 @@ class jandan_duan(scrapy.Spider):
                     yield hot_tucao
             if obj['has_next_page'] == 'true':
                 yield Request(url='https://i.jandan.net/tucao/{0}/n/{1}'.format(comment_post_id, next_id), headers=self.headers, callback=self.parse_comment, meta={'id': comment_post_id})
+
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super(jandan_duan, cls).from_crawler(crawler, *args, **kwargs)
+        crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
+        crawler.signals.connect(spider.spider_error, signal=signals.spider_error)
+        return spider
+
+    def spider_closed(self, spider, reason):
+        mailsender = mailSender()
+        mailsender.send(['receiver@domain.com'], '爬虫 {0} 结束'.format(spider.name), '爬虫结束了, 结束原因 {0}'.format(reason))
+        # 下面是用scrapy自带的MailSender, 但当前版本存在问题
+        # mailer = MailSender.from_settings(self.settings)
+        # return mailer.send(to=['receiver@domain.com'], subject='something error', body='something wrong', cc=['receiver02@domain.com'])
+
+    def spider_error(self, failure, response, spider):
+        mailsender = mailSender()
+        mailsender.send(['receiver@domain.com'], '爬虫 {0} 错误'.format(spider.name), '爬虫出错了{0}, 结果{1}'.format(failure, response))
