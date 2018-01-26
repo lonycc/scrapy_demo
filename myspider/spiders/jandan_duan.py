@@ -26,7 +26,7 @@ class jandan_duan(CrawlSpider):
     }
 
     def start_requests(self):
-        yield Request(url='https://i.jandan.net/duan', headers=self.headers, callback=self.parse_duan, meta={'num': 0})
+        yield Request(url='https://i.jandan.net/duan', headers=self.headers, callback=self.parse_duan, errback=self.handle_error, dont_filter=True, meta={'num': 0})
 
     # 段子
     def parse_duan(self, response):
@@ -85,3 +85,7 @@ class jandan_duan(CrawlSpider):
     def spider_error(self, failure, response, spider):
         mailsender = mailSender()
         mailsender.send(['receiver@domain.com'], '爬虫 {0} 错误'.format(spider.name), '爬虫出错了{0}, 结果{1}'.format(failure, response))
+    
+    def handle_error(self):
+        print('something wrong')
+        CloseSpider()
