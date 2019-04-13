@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from myspider.items import ImagesItem
-from myspider.lib.utils import getEncodeKey, crawlHtml, extractPic
 from scrapy.http import Request
 import scrapy
 import re
@@ -22,7 +21,6 @@ class JandanPicSpider(scrapy.Spider):
             'myspider.pipeline.images_pipeline.MyImagesPipeline': 1,
         }
     }
-    appsecret = getEncodeKey()
 
     def start_requests(self):
         yield Request(url='https://i.jandan.net/pic', headers=self.headers, callback=self.parse)
@@ -31,8 +29,8 @@ class JandanPicSpider(scrapy.Spider):
 
     def parse(self, response):
         item = ImagesItem()
-        img_hash = response.xpath('//ol[@class="commentlist"]//li/div[@class="commenttext"]/p/span[@class="img-hash"]/text()').extract()
-        item['image_urls'] = ['http:' + extractPic(hash+'==', self.appsecret) for hash in img_hash]
+        imgs = response.xpath('//ol[@class="commentlist"]//li/div[@class="commenttext"]//img/@src').extract()
+        item['image_urls'] = ['https:' + img for img in imgs]
         item['title'] = response.url.split('/')[-1] if 'page-' not in response.url else response.url.split('/')[-2]
         yield item
 
